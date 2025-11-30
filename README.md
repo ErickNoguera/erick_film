@@ -1,157 +1,188 @@
 # 🎬 Erick Film – Catálogo de Películas (Frontend + Backend)
 
-Aplicación full-stack desarrollada para practicar arquitectura cliente-servidor, manejo de componentes, consumo de API y estructura profesional de proyectos.  
-Incluye un frontend en React (o similar) y un backend en Node.js — ambos pensados para crecer y escalar.
+Aplicación web fullstack (Frontend + Backend + MongoDB) que permite visualizar información de películas y series. El proyecto está dividido en dos carpetas principales: front (cliente) y back (servidor API).
 
----
+🚀 Tecnologías utilizadas
+Frontend
 
-## 🚀 Características Principales
+HTML, CSS, JavaScript
 
-### 🎭 Frontend (React / JavaScript)
-- Componentes reutilizables organizados por vistas.  
-- Manejo de estado con Hooks.  
-- Consumo de API mediante `fetch`.  
-- Estilos personalizados (CSS / CSS-Modules / Styled Components).  
-- Diseño adaptable y escalable.  
+Webpack
 
-### 🛠️ Backend (Node.js)
-- Servidor modular en Node.js.  
-- Rutas separadas por responsabilidad.  
-- Controladores para lógica limpia.  
-- Estructura preparada para integrar base de datos, autenticación o servicios externos.  
+Axios
 
----
+Live Server (solo para desarrollo)
 
-## 🧰 Stack Tecnológico
+Backend
 
-| Tecnología     | Rol                          |
-|---------------|------------------------------|
-| React         | Interfaz de usuario (Frontend) |
-| JavaScript    | Lógica del cliente y servidor |
-| Node.js       | Servidor backend             |
-| CSS / HTML    | Estilos y estructura visual  |
-| Git / GitHub  | Control de versiones         |
+Node.js
 
----
+Express
 
-## 🎯 Objetivo del Proyecto
+MongoDB + Mongoose
 
-Este proyecto forma parte de mi portafolio como muestra de:
+CORS
 
-- Desarrollo full-stack desde cero.  
-- Buenas prácticas de arquitectura y modularidad.  
-- Consumo de API desde el cliente y lógica backend separada.  
-- Código limpio, organizado y mantenible.  
-- Preparación para escalar con nuevas funcionalidades.  
-
----
-
-## 📦 Instalación y Ejecución
-
-Clona el repositorio y entra en la carpeta:
-
-```
-git clone https://github.com/ErickNoguera/erick_film.git
-cd erick_film
-```
-▶️ Frontend
-cd front
-npm install
-npm start      # o npm run dev
-
-
-Abre en tu navegador:
-http://localhost:3000
-
-🖥️ Backend
-```
-cd back
-npm install
-npm run dev    # o el comando que hayas configurado
-```
+Dotenv
 
 📁 Estructura del Proyecto
 ```
-erick_film/
+proyecto/
 │
-├── front/               # Interfaz de usuario
-│   ├── src/
-│   │   ├── components/  # Componentes reutilizables
-│   │   ├── views/       # Vistas/páginas
-│   │   ├── assets/      # Imágenes, estilos
-│   │   ├── App.js
-│   │   └── index.js
+├── front/
+│   ├── dist/
 │   ├── public/
-│   └── package.json
-│
-├── back/                # Servidor / API
 │   ├── src/
-│   │   ├── routes/      # Endpoints
-│   │   ├── controllers/ # Lógica por ruta
-│   │   ├── utils/       # Funciones auxiliares
-│   │   ├── server.js    # Inicialización
-│   │   └── app.js       # Configuración del servidor
 │   ├── package.json
+│   └── webpack.config.js
 │
-└── README.md            # Este archivo
+└── back/
+    ├── config/
+    │   └── dbConnect.js
+    ├── controller/
+    ├── middleware/
+    ├── models/
+    ├── routes/
+    ├── index.js
+    ├── server.js
+    └── package.json
+```
+🗄️ Backend
+⚙️ Configuración del entorno (.env)
+
+El backend utiliza variables de entorno para conectarse a MongoDB:
+```
+DB_TYPE=mongodb
+DB_USER=tuUsuario
+DB_PASSWORD=tuPassword
+DB_HOST=cluster.mongodb.net
+DB_NAME=nombreDB
+DB_OPTIONS=retryWrites=true&w=majority
+PORT=process.env.PORT || 3000
+```
+🔌 Conexión a MongoDB (config/dbConnect.js)
+
+El backend construye dinámicamente el connection string dependiendo de las variables del .env.
+
+Mongoose se conecta así:
+```
+mongoose.connect(connectionString, { maxPoolSize: 10 });
 ```
 
-🎥 Funcionalidades
+Incluye logs para detectar el estado de la conexión.
 
-Catálogo de películas con listado.
+🔥 Servidor Principal (server.js)
 
-Vista de detalles para cada película (título, imagen, descripción, etc.).
+Usa express.json()
 
-Consumo de API desde frontend hacia backend.
+Configura CORS global
 
-Estructura modular, limpia y mantenible.
+Monta todas las rutas bajo /api
 
-Usuario puede navegar la interfaz (UI básica).
+Maneja errores globales
 
-🚧 Posibles Mejoras Futuras
+🚀 Inicialización del Backend (index.js)
 
-Integrar base de datos real para persistencia (PostgreSQL, MongoDB, etc.).
+Secuencia de arranque:
 
-Añadir sistema de usuarios + autenticación (login, roles).
+1. Conectar a la base de datos
 
-Agregar filtros, búsqueda, paginación, categorías, rating.
-
-Función de “favoritos” o “watchlist”.
-
-Conectar con APIs externas como TMDB.
-
-Desplegar en producción en servicios como Vercel, Render, Railway o AWS.
-
-🤝 Contribuciones
-
-1. Haz un fork del proyecto.
-
-2. Crea una nueva branch:
+2. Levantar el servidor Express
 ```
-git checkout -b feature/NuevaFeature
-``` 
-
-3. Aplica tus cambios y haz commit:
+(async () => {
+  await connectDB();
+  app.listen(PORT, () => console.log(`Server running at port: ${PORT}`));
+})();
 ```
-git commit -m "Agrega nueva funcionalidad"
+🧩 Endpoints (Ejemplo, si tus rutas están en /api)
+
+Cuando me compartas las rutas completas, actualizo esta sección con todos los endpoints reales.
+
+Por ahora:
+```
+GET    /api/...      → lista elementos
+POST   /api/...      → crea elemento
+DELETE /api/:id      → elimina elemento
+PUT    /api/:id      → actualiza elemento
+```
+🎨 Frontend
+
+El frontend está construido con HTML, CSS y JavaScript modularizado con Webpack.
+
+📦 Scripts del Front (front/package.json)
+```
+"scripts": {
+  "dev": "webpack --mode development",
+  "build": "webpack --mode production",
+  "start": "npm run build && live-server dist"
+}
+```
+Desarrollo:
+```
+npm run dev
+```
+Producción:
+```
+npm run build
+npm start
 ```
 
-4. Sube la branch:
+🔗 Comunicación Front ↔ Back
+
+El frontend se comunica con la API usando Axios:
 ```
-git push origin feature/NuevaFeature
+axios.get('http://localhost:3000/api/...') 
+```
+🛠 Instalación
+1) Clonar el repositorio
+```
+git clone https://github.com/tu-user/tu-repo.git
+cd proyecto
+```
+🗄 Backend
+Instalar dependencias
+```
+cd back
+npm install
 ```
 
-5. Abre un Pull Request.
+Crear .env:
+```
+DB_TYPE=mongodb
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_NAME=
+DB_OPTIONS=retryWrites=true&w=majority
+PORT=3000
+```
+Ejecutar servidor
+```
+npm start
+```
 
-Todas las contribuciones son bienvenidas 🙌
+🎨 Frontend
+Instalar dependencias
+```
+cd front
+npm install
+```
 
-👨‍💻 Autor
+Levantar en modo desarrollo:
+```
+npm run dev
+```
 
-Erick Noguera
-Desarrollador Backend / Fullstack
+Compilar y servir:
+```
+npm run build
+npm start
+```
 
-🔗 LinkedIn: https://www.linkedin.com/in/erickyosethnogueraolaizola
+📌 Notas importantes
 
-🐙 GitHub: https://github.com/ErickNoguera
-git clone https://github.com/ErickNoguera/erick_film.git
-cd erick_film
+El servidor backend debe estar corriendo antes que el frontend.
+
+El frontend sirve archivos desde /dist.
+
+Webpack gestiona la compilación, empaquetado y minificación del JS.
